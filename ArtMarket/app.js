@@ -3,9 +3,10 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
-var userRouter = require('./routes/user');
+var indexRouter = require('./routes/Users/index');
+var usersRouter = require('./routes/Users/users');
+var userRouter = require('./routes/Users/user');
+const transactionsRouter = require("./routes/Transactions/transactions");
 
 
 var app = express();
@@ -19,6 +20,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/user', usersRouter);
+app.use('/transactions', transactionsRouter);
+
+app.listen(5000, ()=>{
+    console.log('server is listening')
+});
 
 
 module.exports = app;
