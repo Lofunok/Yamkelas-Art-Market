@@ -93,7 +93,7 @@ router.post("/Updateuser", function (req, res, next) {
       console.log("Result: " + result);
 
       res.json({
-        status: "created",
+        status: "updated",
       });
     });
   } catch (e) {
@@ -101,4 +101,5 @@ router.post("/Updateuser", function (req, res, next) {
     throw Error("Invalid JSON");
   }
 });
+
 module.exports = router;
