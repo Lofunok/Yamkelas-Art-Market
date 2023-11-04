@@ -102,7 +102,7 @@ router.post("/Updateuser", function (req, res, next) {
 });
 
 //delete a user
-router.get("/delete/:username", function (req, res, next) {
+router.delete("/delete/:username", function (req, res, next) {
   try {
     var sql = "delete from users where username=?";
     var values = [req.params.username];
