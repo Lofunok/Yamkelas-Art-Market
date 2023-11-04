@@ -61,9 +61,7 @@ router.get("/Finduser", function (req, res, next) {
       if (err) throw err;
       console.log("Result: " + result);
 
-      res.json({
-        status: "found",
-      });
+      res.json(result);
     });
   } catch (e) {
     res.status(404);
@@ -75,7 +73,7 @@ router.get("/Finduser", function (req, res, next) {
 router.post("/Updateuser", function (req, res, next) {
   try {
     var sql =
-      "update product set name=?, surname=?, username=?, password=?, age=?, email=?, bio=?, phonenumber=?";
+      "update users set name=?, surname=?, username=?, password=?, age=?, email=?, bio=?, phonenumber=? where userid=?";
 
     var values = [
       req.body.hasOwnProperty("name") ? req.body.name : "",
@@ -86,6 +84,7 @@ router.post("/Updateuser", function (req, res, next) {
       req.body.hasOwnProperty("email") ? req.body.email : "",
       req.body.hasOwnProperty("bio") ? req.body.bio : "",
       req.body.hasOwnProperty("phonenumber") ? req.body.phonenumber : "",
+      req.body.hasOwnProperty("userid") ? req.body.userid : "",
     ];
 
     con.query(sql, values, function (err, result) {
@@ -102,4 +101,40 @@ router.post("/Updateuser", function (req, res, next) {
   }
 });
 
+//delete a user
+router.get("/delete/:username", function (req, res, next) {
+  try {
+    var sql = "delete from users where username=?";
+    var values = [req.params.username];
+
+    con.query(sql, values, function (err, result) {
+      if (err) throw err;
+      console.log("Result: " + result);
+
+      res.json({
+        status: "deleted",
+      });
+    });
+  } catch (e) {
+    res.status(500);
+    throw Error("invalid JSON");
+  }
+});
+
+//get all users
+router.get("/users", function (req, res, next) {
+  try {
+    var sql = "select * from users";
+
+    con.query(sql, function (err, result) {
+      if (err) throw err;
+      console.log("Result: " + result);
+
+      res.json(result);
+    });
+  } catch (e) {
+    res.status(500);
+    throw Error("invalid JSON");
+  }
+});
 module.exports = router;
