@@ -70,7 +70,7 @@ router.get("/Finduser", function (req, res, next) {
 });
 
 //update a user
-router.post("/Updateuser", function (req, res, next) {
+router.put("/Updateuser", function (req, res, next) {
   try {
     var sql =
       "update users set name=?, surname=?, username=?, password=?, age=?, email=?, bio=?, phonenumber=? where userid=?";
