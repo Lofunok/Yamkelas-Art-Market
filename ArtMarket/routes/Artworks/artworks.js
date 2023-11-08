@@ -3,21 +3,21 @@ var router = express.Router();
 
 //Creating connection
 var mysql = require("mysql2");
-var con = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "Password1",
-  database: "art_market_db",
+var connection = mysql.createConnection({
+  host: 'localhost',
+  user: 'root',
+  password: 'Password1',
+  database: 'art_market_db',
 });
 
 //Validating connection
-con.connect(function (err) {
+connection.connect(function (err) {
   if (err) throw err;
   console.log("Connected to MySQL");
 });
 
 //create new artwork for bidding
-app.post('/create', (req, res) => {
+router.post('/create', (req, res) => {
   const { artworkName, artworkImg, description, catagories, sellerid, dateListed, timeListed, scheduledcloseDate, active, buyNowPrice } = req.body;
 
   const query = `INSERT INTO artworks (artworkName, artworkImg, description, catagories, sellerid,dateListed,timeListed,scheduledcloseDate,active,buyNowPrice) VALUES ('${artworkName}', '${artworkImg}', '${description}', '${catagories}', '${sellerid}', '${dateListed}', '${timeListed}', '${scheduledcloseDate}', '${active}', '${buyNowPrice}')`;
@@ -35,7 +35,7 @@ app.post('/create', (req, res) => {
 });
 
 //edit details of existing artwork
-app.post('/update', (req, res) => {
+router.post('/update', (req, res) => {
   const { artworkid, artworkName, artworkImg, description, catagories, sellerid, dateListed, timeListed, scheduledcloseDate, active, buyNowPrice } = req.body;
 
   const query = `UPDATE artworks SET artworkName = '${artworkName}', artworkImg = '${artworkImg}', description = '${description}', catagories = '${catagories}', sellerid = '${sellerid}', dateListed = '${dateListed}', timeListed = '${timeListed}', scheduledcloseDate = '${scheduledcloseDate}', active = '${active}', buyNowPrice = '${buyNowPrice}' WHERE artworkid = '${artworkid}'`;
@@ -53,7 +53,7 @@ app.post('/update', (req, res) => {
 });
 
 //view all artworks in artworks table
-app.get('/artworks', (req, res) => {
+router.get('/artworks', (req, res) => {
   connection.query('SELECT * FROM artworks', (err, results) => {
     if (err) {
       console.error('Error querying artworks table: ', err);
@@ -65,7 +65,7 @@ app.get('/artworks', (req, res) => {
 });
 
 //view all of own artwork
-app.get('/artworks/:sellerid', (req, res) => {
+router.get('/artworks/:sellerid', (req, res) => {
 
   var sellerid = req.params.sellerid;
   var sql = "SELECT * FROM artworks WHERE sellerid = ?"; // use a placeholder for the seller ID
@@ -86,14 +86,14 @@ app.get('/artworks/:sellerid', (req, res) => {
 
 //delete artwork
 // Define the delete route
-app.delete('/artwork/:sellerid', function(req, res) {
+router.delete('/artwork/:sellerid', function(req, res) {
   // Get the address parameter from the URL
   var sellerid = req.params.sellerid;
 
   // Create the SQL query string
   var sql = "DELETE FROM artworks WHERE sellerid = " + sellerid;
   // Execute the query
-  con.query(sql, function(err, result) {
+  connection.query(sql, function(err, result) {
     if (err) throw err;
     // Log the number of records deleted
     console.log("Number of records deleted: " + result.affectedRows);

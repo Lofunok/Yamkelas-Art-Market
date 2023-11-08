@@ -6,7 +6,7 @@ var mysql = require("mysql2");
 var con = mysql.createConnection({
   host: "localhost",
   user: "root",
-  password: "79252626Lmk#",
+  password: "Password1",
   database: "art_market_db",
 });
 
