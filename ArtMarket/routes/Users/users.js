@@ -1,6 +1,6 @@
 'use strict';
 
-var bcrypt = require('bcryptjs');
+var bycrypt = require('bcryptjs');
 const passport = require('passport');
 const db = require('../db');
 const config = require('../config');
@@ -23,7 +23,7 @@ module.exports.detail = [
 module.exports.login = [
   (request, response) => {
     console.log(request.body);
-    db.users.findByUsername(request.body.username, request.body.password, function(err,user){
+    db.users.findByUsername(request.body.username, function(err,user){
       if(err) return response.json({
         'error': err
       });
