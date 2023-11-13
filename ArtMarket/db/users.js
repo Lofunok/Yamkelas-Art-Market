@@ -14,12 +14,13 @@ console.log("Connected to MySQL");
 });
 
 
-module.exports.findById = (id, done) => {
+module.exports.findByUsername = (username, password, done) => {
     try {
         var sql = "select userid name, surname, password, age, email, usertype, bio, phonenumber where username=? AND password=?"
 
         var values = [
-            id,
+            username,
+            password
         ]
 
         con.query(sql, values, function (err, result)
@@ -41,7 +42,7 @@ module.exports.findById = (id, done) => {
 
 module.exports.getprofile = (id, done) => {
     try {
-        var sql = "select userid name, surname, password, age, email, usertype, bio, phonenumber where username=? AND password=?"
+        var sql = "select userid name, surname, password, age, email, usertype, bio, phonenumber where id=?"
 
         var values = [
             id

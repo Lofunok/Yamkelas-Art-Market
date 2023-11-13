@@ -27,15 +27,6 @@ app.use("/artworks", artworkrouter);
 require('./auth');
 app.post('/login', routes.users.users.login);
 
-//anonymous access
-app.get('/hello', function(req, res, next){
-  var welcome = {
-    'title': 'greeting',
-    'message': 'hello node.js'
-  }
-  res.json(welcome);
-});
-
 //jwt access
 app.get('/profile/:id', route.users.users.detail);
 
