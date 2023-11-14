@@ -17,7 +17,7 @@ con.connect(function (err) {
 });
 
 //create new artwork for bidding
-app.post("/createartwork", (req, res) => {
+router.post("/createartwork", (req, res) => {
   const {
     artworkName,
     artworkImg,
@@ -46,7 +46,7 @@ app.post("/createartwork", (req, res) => {
 });
 
 //edit details of existing artwork
-app.put("/updateartwork", (req, res) => {
+router.put("/updateartwork", (req, res) => {
   const {
     artworkid,
     artworkName,
@@ -76,7 +76,7 @@ app.put("/updateartwork", (req, res) => {
 });
 
 //view all artworks in artworks table
-app.get("/artworks", (req, res) => {
+router.get("/artworks", (req, res) => {
   connection.query("SELECT * FROM artworks", (err, results) => {
     if (err) {
       console.error("Error querying artworks table: ", err);
@@ -88,7 +88,7 @@ app.get("/artworks", (req, res) => {
 });
 
 //view all of own artwork
-app.get("/viewartwork/:sellerid", (req, res) => {
+router.get("/viewartwork/:sellerid", (req, res) => {
   var sellerid = req.params.sellerid;
   var sql = "SELECT * FROM artworks WHERE sellerid = ?"; // use a placeholder for the seller ID
 
@@ -110,7 +110,7 @@ app.get("/viewartwork/:sellerid", (req, res) => {
 
 //delete artwork
 // Define the delete route
-app.delete("/deleteartwork/:sellerid", function (req, res) {
+router.delete("/deleteartwork/:sellerid", function (req, res) {
   // Get the address parameter from the URL
   var sellerid = req.params.sellerid;
 
