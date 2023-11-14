@@ -5,7 +5,7 @@ var logger = require("morgan");
 
 var userRouter = require("./routes/User/user");
 var transactionsRouter = require("./routes/Transactions/transactions");
-var artworkrouter = require("./routers/Artworks/artworks");
+var artworkrouter = require("./routes/Artworks/artworks");
 
 var app = express();
 
