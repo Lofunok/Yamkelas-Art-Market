@@ -102,10 +102,10 @@ router.put("/Updateuser", function (req, res, next) {
 });
 
 //delete a user
-router.delete("/delete/:username", function (req, res, next) {
+router.delete("/delete/:userid", function (req, res, next) {
   try {
-    var sql = "delete from users where username=?";
-    var values = [req.params.username];
+    var sql = "delete from users where userid=?";
+    var values = [req.params.userid];
 
     con.query(sql, values, function (err, result) {
       if (err) throw err;

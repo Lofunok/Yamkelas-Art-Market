@@ -3,7 +3,7 @@ var router = express.Router();
 
 //Creating connection
 var mysql = require("mysql2");
-var con = mysql.createConnection({
+var connection = mysql.createConnection({
   host: "localhost",
   user: "root",
   password: "79252626Lmk#",
@@ -11,7 +11,7 @@ var con = mysql.createConnection({
 });
 
 //Validating connection
-con.connect(function (err) {
+connection.connect(function (err) {
   if (err) throw err;
   console.log("Connected to MySQL");
 });
@@ -48,7 +48,6 @@ router.post("/createartwork", (req, res) => {
 //edit details of existing artwork
 router.put("/updateartwork", (req, res) => {
   const {
-    artworkid,
     artworkName,
     artworkImg,
     description,
@@ -59,6 +58,7 @@ router.put("/updateartwork", (req, res) => {
     scheduledcloseDate,
     active,
     buyNowPrice,
+    artworkid
   } = req.body;
 
   const query = `UPDATE artworks SET artworkName = '${artworkName}', artworkImg = '${artworkImg}', description = '${description}', catagories = '${catagories}', sellerid = '${sellerid}', dateListed = '${dateListed}', timeListed = '${timeListed}', scheduledcloseDate = '${scheduledcloseDate}', active = '${active}', buyNowPrice = '${buyNowPrice}' WHERE artworkid = '${artworkid}'`;
@@ -110,14 +110,14 @@ router.get("/viewartwork/:sellerid", (req, res) => {
 
 //delete artwork
 // Define the delete route
-router.delete("/deleteartwork/:sellerid", function (req, res) {
+router.delete("/deleteartwork/:artworkid", function (req, res) {
   // Get the address parameter from the URL
-  var sellerid = req.params.sellerid;
+  var artworkid = req.params.artworkid;
 
   // Create the SQL query string
-  var sql = "DELETE FROM artworks WHERE sellerid = " + sellerid;
+  var sql = "DELETE FROM artworks WHERE artworkid = ?";
   // Execute the query
-  con.query(sql, function (err, result) {
+  connection.query(sql, artworkid, function (err, result) {
     if (err) throw err;
     // Log the number of records deleted
     console.log("Number of records deleted: " + result.affectedRows);

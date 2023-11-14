@@ -39,7 +39,7 @@ router.post("/createbid", (req, res) => {
 });
 
 //READ
-router.get("/show", (req, res) => {
+router.get("/transactions", (req, res) => {
   const insertSql = "SELECT * FROM transactions";
 
   connection.query(insertSql, (err, result) => {
@@ -52,7 +52,7 @@ router.get("/show", (req, res) => {
   });
 });
 
-router.get("/show/:id", (req, res) => {
+router.get("/showuserbids/:id", (req, res) => {
   const { id } = req.params;
   const condition = `bidid = ${id}`;
   const insertSql = `SELECT * FROM transactions WHERE ${condition}`;
@@ -67,7 +67,7 @@ router.get("/show/:id", (req, res) => {
   });
 });
 
-router.get("/artworkBid:artworkid", (req, res) => {
+router.get("/showartworkbids/:artworkid", (req, res) => {
   const { artworkid } = req.params;
   const condition = `artworkid = ${artworkid}`;
   const insertSql = `SELECT * FROM transactions WHERE ${condition}`;
