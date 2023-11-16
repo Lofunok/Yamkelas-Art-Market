@@ -7,6 +7,9 @@ var bodyParser = require('body-parser');
 // Additional middleware for CORS
 var cors = require('cors');
 
+
+const passport = require('passport');
+const routes = require('./routes');
 var userRouter = require("./routes/User/user");
 var transactionsRouter = require("./routes/Transactions/transactions");
 var artworkrouter = require("./routes/Artworks/artworks");
@@ -27,14 +30,12 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
-// Define routes
 app.use("/user", userRouter);
 app.use("/transactions", transactionsRouter);
 app.use("/artworks", artworkrouter);
 
-// Ensure your server is running
-app.listen(3000, () => {
-  console.log("server is listening on port 3000");
+app.listen(5000, () => {
+  console.log("server is listening");
 });
 
 module.exports = app;
