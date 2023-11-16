@@ -9,6 +9,10 @@ var artworkrouter = require("./routes/Artworks/artworks");
 
 var app = express();
 
+app.get ('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public/login.html'))
+})
+
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));

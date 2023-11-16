@@ -2,6 +2,7 @@ var express = require("express");
 var router = express.Router();
 require('dotenv').config();
 
+
 //Creating connection
 var mysql = require("mysql2");
 var con = mysql.createConnection({
@@ -35,12 +36,13 @@ router.post("/Createuser", function (req, res, next) {
     ];
 
     con.query(sql, values, function (err, result) {
-      if (err) throw err;
+      if (err) {
+    console.error("Error querying artworks table: ", err);
+    res.status(500).json({error: err});
+    return;
+      }
       console.log("Result: " + result);
-
-      res.json({
-        status: "created",
-      });
+      res.status(200).json({message: "created"});
     });
   } catch (e) {
     res.status(404);
@@ -59,10 +61,11 @@ router.get("/Finduser", function (req, res, next) {
     ];
 
     con.query(sql, values, function (err, result) {
-      if (err) throw err;
-      console.log("Result: " + result);
-
-      res.json(result);
+        if (results.length > 0) {
+            res.status(200).json(result);
+          } else {
+            res.status(404).json({message: "Incorrect username or password"});
+          }
     });
   } catch (e) {
     res.status(404);
@@ -89,11 +92,13 @@ router.put("/Updateuser", function (req, res, next) {
     ];
 
     con.query(sql, values, function (err, result) {
-      if (err) throw err;
+      if (err) {
+        console.error("Error updating artwork: ", err);
+  res.status(500).json({error: "Error updating artwork"});
+      }
       console.log("Result: " + result);
-
-      res.json({
-        status: "updated",
+      res.status(200).json({
+        message: "updated",
       });
     });
   } catch (e) {
@@ -103,17 +108,22 @@ router.put("/Updateuser", function (req, res, next) {
 });
 
 //delete a user
-router.delete("/delete/:userid", function (req, res, next) {
+router.delete("/Deleteuser/:userid", function (req, res, next) {
   try {
     var sql = "delete from users where userid=?";
     var values = [req.params.userid];
 
     con.query(sql, values, function (err, result) {
-      if (err) throw err;
+      if (err) 
+      {
+        console.error("Error deleting user: ", err);
+        res.status(500).json({error: err});
+      }
+
       console.log("Result: " + result);
 
-      res.json({
-        status: "deleted",
+      res.status(200).json({
+        message: "deleted",
       });
     });
   } catch (e) {
@@ -128,10 +138,11 @@ router.get("/users", function (req, res, next) {
     var sql = "select * from users";
 
     con.query(sql, function (err, result) {
-      if (err) throw err;
-      console.log("Result: " + result);
-
-      res.json(result);
+      if (results.length > 0) {
+        res.status(200).json(result);
+      } else {
+        res.status(404).json({message: "Incorrect username or password"});
+      }
     });
   } catch (e) {
     res.status(500);

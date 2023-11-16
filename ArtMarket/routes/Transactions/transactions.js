@@ -31,7 +31,7 @@ router.post("/createbid", (req, res) => {
 
   connection.query(insertSql, values, (err, result) => {
     if (err) {
-      res.status(404).json({ message: err });
+      res.status(500).json({ error: err });
       return;
     }
     res.status(200).json({ message: result.affectedRows });
