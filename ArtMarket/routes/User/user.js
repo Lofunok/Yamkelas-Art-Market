@@ -1,13 +1,14 @@
 var express = require("express");
 var router = express.Router();
+require('dotenv').config();
 
 //Creating connection
 var mysql = require("mysql2");
 var con = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "79252626Lmk#",
-  database: "art_market_db",
+  host: process.env.HOST,
+ user: process.env.USER,
+ password: process.env.PASSWORD,
+ database: process.env.DATABASE,
 });
 
 //Validating connection

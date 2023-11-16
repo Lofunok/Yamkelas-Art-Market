@@ -1,14 +1,14 @@
 const express = require("express");
-
 const router = express.Router();
+require('dotenv').config();
 
 const mysql = require("mysql2");
 
 const connection = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "79252626Lmk#",
-  database: "art_market_db",
+  host: process.env.HOST,
+ user: process.env.USER,
+ password: process.env.PASSWORD,
+ database: process.env.DATABASE,
 });
 
 connection.connect((err) => {
@@ -16,7 +16,7 @@ connection.connect((err) => {
     console.error("error: ", err);
     return;
   }
-  console.log("connected");
+  console.log("Connected to MySQL");
 });
 
 //CREATE
