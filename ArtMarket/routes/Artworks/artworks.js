@@ -7,7 +7,7 @@ require('dotenv').config();
 
 //Creating connection
 var mysql = require("mysql2");
-var connection = mysql.createConnection({
+var con = mysql.createConnection({
  host: process.env.HOST,
  user: process.env.USER,
  password: process.env.PASSWORD,
@@ -15,7 +15,7 @@ var connection = mysql.createConnection({
 });
 
 //Validating connection
-connection.connect(function (err) {
+con.connect(function (err) {
   if (err) throw err;
   console.log("Connected to MySQL");
 });

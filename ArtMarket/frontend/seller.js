@@ -13,7 +13,7 @@ function submitArtwork(e){
     
 
     let sellerid = 7;
-    
+
     let currentDate = new Date();
 
     let year = currentDate.getFullYear();
@@ -28,8 +28,6 @@ function submitArtwork(e){
     let seconds = currentDate.getSeconds();
 
     let timeListed = (hours < 10 ? '0' : '') + hours + ':' + (minutes < 10 ? '0': '') + seconds;
-
-
 
     if (sellingOption.checked){
         active = 1;
@@ -65,7 +63,7 @@ function submitArtwork(e){
         formData.append('active', active);
         formData.append('buyNowPrice', priceInput);
 
-        fetch("http://localhost:3000/artworks/create",{
+        fetch("http://localhost:5000/artworks/create",{
             method: 'POST',
             body:formData
         });

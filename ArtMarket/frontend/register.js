@@ -13,7 +13,7 @@ function submitForm() {
     
     
     //send data to backend
-    fetch("http://localhost:3000/user/Createuser",{
+    fetch("http://localhost:5000/user/Createuser",{
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
