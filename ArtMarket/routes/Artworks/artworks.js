@@ -1,5 +1,8 @@
 var express = require("express");
 var router = express.Router();
+var multer = require('multer');
+const path = require('path');
+
 require('dotenv').config();
 
 //Creating connection
@@ -17,32 +20,35 @@ connection.connect(function (err) {
   console.log("Connected to MySQL");
 });
 
-//create new artwork for bidding
-router.post("/createartwork", (req, res) => {
-  const {
-    artworkName,
-    artworkImg,
-    description,
-    catagories,
-    sellerid,
-    dateListed,
-    timeListed,
-    scheduledcloseDate,
-    active,
-    buyNowPrice,
-  } = req.body;
+const storage = multer.diskStorage({
+  destination: function(req, file, callback) {
+    const destinationPath = path.join(__dirname,'..','..', 'upload_images');
+    callback(null, destinationPath);
+  },
+  filename: function(req, file, callback){
+    callback(null, file.originalname);
+  }
+})
+
+const images = multer({storage: storage});
+
+router.post('/create', images.array("artworkImage"),(req, res) => {
+
+  const { artworkName, description, catagories, sellerid, dateListed, timeListed, scheduledcloseDate, active, buyNowPrice } = req.body;
+
+  const artworkImg = req.files[0].filename;
 
   const query = `INSERT INTO artworks (artworkName, artworkImg, description, catagories, sellerid,dateListed,timeListed,scheduledcloseDate,active,buyNowPrice) VALUES ('${artworkName}', '${artworkImg}', '${description}', '${catagories}', '${sellerid}', '${dateListed}', '${timeListed}', '${scheduledcloseDate}', '${active}', '${buyNowPrice}')`;
 
-  connection.query(query, (err, result) => {
+  con.query(query, (err, result) => {
     if (err) {
-      console.error("Error creating artwork: ", err);
-      res.status(500).send("Error creating artwork");
+      console.error('Error creating artwork: ', err);
+      res.status(500).send('Error creating artwork');
       return;
     }
 
-    console.log("Artwork created successfully!");
-    res.send("Artwork created successfully!");
+    console.log('Artwork created successfully!');
+    res.send('Artwork created successfully!');
   });
 });
 
