@@ -2,16 +2,16 @@ var express = require("express");
 var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
+const cors = require("cors");
 
 var userRouter = require("./routes/User/user");
 var transactionsRouter = require("./routes/Transactions/transactions");
 var artworkrouter = require("./routes/Artworks/artworks");
 
+//middleware
 var app = express();
-
-app.get ('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public/login.html'))
-})
+app.use(cors());
+app.use(express.json());
 
 app.use(logger("dev"));
 app.use(express.json());
