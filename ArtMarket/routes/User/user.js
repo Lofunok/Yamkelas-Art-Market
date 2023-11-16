@@ -6,7 +6,7 @@ var mysql = require("mysql2");
 var con = mysql.createConnection({
   host: "localhost",
   user: "root",
-  password: "79252626Lmk#",
+  password: "Khumalo1959",
   database: "art_market_db",
 });
 
@@ -48,13 +48,13 @@ router.post("/Createuser", function (req, res, next) {
 });
 
 // Find specific user
-router.get("/Finduser", function (req, res, next) {
+router.get("/Finduser/:username/:password", function (req, res, next) {
   try {
     var sql = "select * from users where username=? and password=?";
 
     var values = [
-      req.body.hasOwnProperty("username") ? req.body.username : "",
-      req.body.hasOwnProperty("password") ? req.body.password : "",
+      req.body.hasOwnProperty("username") ? req.params.username : "",
+      req.body.hasOwnProperty("password") ? req.params.password : "",
     ];
 
     con.query(sql, values, function (err, result) {

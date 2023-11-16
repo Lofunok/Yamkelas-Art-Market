@@ -5,9 +5,9 @@ const router = express.Router();
 const mysql = require("mysql2");
 
 const connection = mysql.createConnection({
-  host: "localhost",
+  host: "127.0.0.1",
   user: "root",
-  password: "79252626Lmk#",
+  password: "Khumalo1959",
   database: "art_market_db",
 });
 
@@ -67,7 +67,7 @@ router.get("/show/:id", (req, res) => {
   });
 });
 
-router.get("/artworkBid:artworkid", (req, res) => {
+router.get("/artworkbid/:artworkid", (req, res) => {
   const { artworkid } = req.params;
   const condition = `artworkid = ${artworkid}`;
   const insertSql = `SELECT * FROM transactions WHERE ${condition}`;
