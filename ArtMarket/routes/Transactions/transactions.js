@@ -32,11 +32,11 @@ res.status(500).json(err);
 }
 });
 
-router.get("/showuserbids/:bidid", async (req, res) => {
+router.get("/showuserbids/:bidderid", async (req, res) => {
   try{
-    const id  = [req.params.bidid];
+    const bidderid  = [req.params.bidderid];
 
-  const getTransaction = await pool.query(`SELECT * FROM transactions WHERE bidid = ($1)`, id);
+  const getTransaction = await pool.query(`SELECT * FROM transactions WHERE bidderid = ($1)`, bidderid);
   if (getTransaction.rowCount > 0) {
     res.status(200).json(getTransaction.rows);
   } else {
