@@ -1,29 +1,14 @@
 var express = require("express");
 var router = express.Router();
 require('dotenv').config();
-
-
-//Creating connection
-var mysql = require("mysql2");
-var con = mysql.createConnection({
-  host: process.env.HOST,
- user: process.env.USER,
- password: process.env.PASSWORD,
- database: process.env.DATABASE,
-});
-
-//Validating connection
-con.connect(function (err) {
-  if (err) throw err;
-  console.log("Connected to MySQL");
-});
+const pool = require("../../db/db");
 
 //Creating a new user
 router.post("/Createuser", async (req, res) => {
   try {
     var sql =
       "insert into users (name, surname, username, password, age, email, usertype, bio, phonenumber) values (?,?,?,?,?,?,?,?,?)";
-    const { values }  = [
+    var values = [
       req.body.hasOwnProperty("name") ? req.body.name : "",
       req.body.hasOwnProperty("surname") ? req.body.surname : "",
       req.body.hasOwnProperty("username") ? req.body.username : "",
@@ -35,17 +20,17 @@ router.post("/Createuser", async (req, res) => {
       req.body.hasOwnProperty("phonenumber") ? req.body.phonenumber : "",
     ];
 
-    const createUser = await pool.query(sql, [values]);
-    console.log("Result: " + result);
-    res.status(200).json(createUser.rows[0]);
+    const newUser = await pool.query(sql, values);
+      console.log("Result: " + newUser[0]);
+      res.status(200).json({message: "created"});
   } catch (err) {
-    console.error("Error creating user: ", err);
+    console.error("Error querying artworks table: ", err);
     res.status(500).json({error: err});
   }
 });
 
 // Find specific user
-router.get("/Finduser", function (req, res, next) {
+router.get("/Finduser", async (req, res) => {
   try {
     var sql = "select * from users where username=? and password=?";
 
@@ -54,21 +39,20 @@ router.get("/Finduser", function (req, res, next) {
       req.body.hasOwnProperty("password") ? req.body.password : "",
     ];
 
-    con.query(sql, values, function (err, result) {
-        if (result.length > 0) {
-            res.status(200).json(result);
+    const findUser = await pool.query(sql, values);
+        if (findUser.length > 0) {
+            res.status(200).json(findUser);
           } else {
             res.status(404).json({message: "Incorrect username or password"});
           }
-    });
-  } catch (e) {
+  } catch (err) {
     res.status(404);
     throw Error("Invalid JSON");
   }
 });
 
 //update a user
-router.put("/Updateuser", function (req, res, next) {
+router.put("/Updateuser", async (req, res) => {
   try {
     var sql =
       "update users set name=?, surname=?, username=?, password=?, age=?, email=?, bio=?, phonenumber=? where userid=?";
@@ -85,44 +69,34 @@ router.put("/Updateuser", function (req, res, next) {
       req.body.hasOwnProperty("userid") ? req.body.userid : "",
     ];
 
-    con.query(sql, values, function (err, result) {
-      if (err) {
-        console.error("Error updating artwork: ", err);
-  res.status(500).json({error: "Error updating artwork"});
-      }
-      console.log("Result: " + result);
+    const updateUser = await pool.query(sql, values);
+      console.log("Result: " + updateUser[0]);
       res.status(200).json({
         message: "updated",
       });
-    });
-  } catch (e) {
-    res.status(404);
-    throw Error("Invalid JSON");
+  
+  } catch (err) {
+    console.error("Error updating artwork: ", err);
+    res.status(500).json({error: "Error updating artwork"});
   }
 });
 
 //delete a user
-router.delete("/Deleteuser/:userid", function (req, res, next) {
+router.delete("/Deleteuser/:userid", async (req, res) => {
   try {
     var sql = "delete from users where userid=?";
     var values = [req.params.userid];
 
-    con.query(sql, values, function (err, result) {
-      if (err) 
-      {
-        console.error("Error deleting user: ", err);
-        res.status(500).json({error: err});
-      }
-
-      console.log("Result: " + result);
+    const deleteUser = await pool.query(sql, values);
+      console.log("Result: " + deleteUser);
 
       res.status(200).json({
         message: "deleted",
       });
-    });
-  } catch (e) {
-    res.status(500);
-    throw Error("invalid JSON");
+    
+  } catch (err) {
+    console.error("Error deleting user: ", err);
+        res.status(500).json({error: err});
   }
 });
 
@@ -131,15 +105,14 @@ router.get("/users", async (req, res) => {
   try {
     var sql = "select * from users";
 
-    const allUsers = await pool.query(sql);
-      if (allUsers.length > 0) {
-        res.status(200).json(allUsers.rows);
+    const getUsers = await pool.query(sql);
+      if (getUsers.length > 0) {
+        res.status(200).json(getUsers.rows);
       } else {
-        res.status(404).json({message: "No users"});
+        res.status(404).json({message: "Error getting users"});
       }
-  } catch (err) {
-    console.error("Error getting users: ", err);
-    res.status(500).json({error: err});
+    }catch(err) {
+    res.status(500).json(err);
   }
 });
 module.exports = router;

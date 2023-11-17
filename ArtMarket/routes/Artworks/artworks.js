@@ -1,25 +1,12 @@
 var express = require("express");
 var router = express.Router();
 require('dotenv').config();
-
-//Creating connection
-var mysql = require("mysql2");
-var connection = mysql.createConnection({
- host: process.env.HOST,
- user: process.env.USER,
- password: process.env.PASSWORD,
- database: process.env.DATABASE,
-});
-
-//Validating connection
-connection.connect(function (err) {
-  if (err) throw err;
-  console.log("Connected to MySQL");
-});
+const pool = require("../../db/db");
 
 //create new artwork for bidding
-router.post("/createartwork", (req, res) => {
-  const {
+router.post("/createartwork", async (req, res) => {
+  try{
+    const {
     artworkName,
     artworkImg,
     description,
@@ -34,21 +21,19 @@ router.post("/createartwork", (req, res) => {
 
   const query = `INSERT INTO artworks (artworkName, artworkImg, description, catagories, sellerid,dateListed,timeListed,scheduledcloseDate,active,buyNowPrice) VALUES ('${artworkName}', '${artworkImg}', '${description}', '${catagories}', '${sellerid}', '${dateListed}', '${timeListed}', '${scheduledcloseDate}', '${active}', '${buyNowPrice}')`;
 
-  connection.query(query, (err, result) => {
-    if (err) {
-      console.error("Error creating artwork: ", err);
-      res.status(500).send("Error creating artwork");
-      return;
-    }
-
-    console.log("Artwork created successfully!");
-    res.send("Artwork created successfully!");
-  });
+  const createArtwork = await pool.query(query);
+    console.log("Artwork created successfully!" + createArtwork[0]);
+    res.status(200).json({message: "Artwork created successfully!"});
+  } catch (err) {
+    console.error("Error creating artwork: ", err);
+    res.status(500).send("Error creating artwork");
+}
 });
 
+
 //edit details of existing artwork
-router.put("/updateartwork", (req, res) => {
-  const {
+router.put("/updateartwork", async(req, res) => {
+  try{const {
     artworkName,
     artworkImg,
     description,
@@ -64,67 +49,71 @@ router.put("/updateartwork", (req, res) => {
 
   const query = `UPDATE artworks SET artworkName = '${artworkName}', artworkImg = '${artworkImg}', description = '${description}', catagories = '${catagories}', sellerid = '${sellerid}', dateListed = '${dateListed}', timeListed = '${timeListed}', scheduledcloseDate = '${scheduledcloseDate}', active = '${active}', buyNowPrice = '${buyNowPrice}' WHERE artworkid = '${artworkid}'`;
 
-  connection.query(query, (err, result) => {
-    if (err) {
-      console.error("Error updating artwork: ", err);
+  const updateArtwork = await pool.query(query);
+    console.log("Artwork updated successfully!" + updateArtwork[0]);
+    res.status(200).json({message:"Artwork updated successfully!"});
+}catch (err){
+  console.error("Error updating artwork: ", err);
       res.status(500).send("Error updating artwork");
-      return;
-    }
-
-    console.log("Artwork updated successfully!");
-    res.send("Artwork updated successfully!");
-  });
+}
+  
 });
 
 //view all artworks in artworks table
-router.get("/artworks", (req, res) => {
-  connection.query("SELECT * FROM artworks", (err, results) => {
-    if (err) {
-      console.error("Error querying artworks table: ", err);
-      res.status(500).send("Error querying artworks table");
-      return;
-    }
-    res.json(results);
-  });
+router.get("/artworks", async (req, res) => {
+  try{
+    const getAllArtworks= await pool.query("SELECT * FROM artworks");
+    res.status(200).json(getAllArtworks);
+} catch (err){
+  console.error("Error querying artworks table: ", err);
+  res.status(500).send("Error querying artworks table");
+}
 });
+  
+  
 
 //view all of own artwork
-router.get("/viewartwork/:sellerid", (req, res) => {
-  var sellerid = req.params.sellerid;
+router.get("/viewartwork/:sellerid", async (req, res) => {
+  try{
+    var sellerid = req.params.sellerid;
   var sql = "SELECT * FROM artworks WHERE sellerid = ?"; // use a placeholder for the seller ID
 
-  connection.query(sql, [sellerid], (err, results) => {
+  const findArtwork = await pool.query(sql, [sellerid]);
     // pass the seller ID as a parameter
-    if (err) {
-      console.error("Error querying artworks table: ", err);
-      res.status(500).send("Error querying artworks table");
-      return;
-    }
-    if (results.length > 0) {
+    if (findArtwork.length > 0) {
       // check if the results array is not empty
-      res.json(results);
+      res.status(200).json(findArtwork);
     } else {
-      res.status(404).send("No artworks found for this seller"); // send a 404 status and message if no artworks are found
+      res.status(404).json({message:"No artworks found for this seller"}); // send a 404 status and message if no artworks are found
     }
-  });
+  
+  } catch (err){
+    console.error("Error querying artworks table: ", err);
+      res.status(500).send("Error querying artworks table");
+  }
+  
 });
 
 //delete artwork
 // Define the delete route
-router.delete("/deleteartwork/:artworkid", function (req, res) {
-  // Get the address parameter from the URL
+router.delete("/deleteartwork/:artworkid", async (req, res) => {
+  try {// Get the address parameter from the URL
   var artworkid = req.params.artworkid;
 
   // Create the SQL query string
   var sql = "DELETE FROM artworks WHERE artworkid = ?";
   // Execute the query
-  connection.query(sql, artworkid, function (err, result) {
-    if (err) throw err;
+  const deleteUser = await pool.query(sql, artworkid, function (err, result) {
     // Log the number of records deleted
-    console.log("Number of records deleted: " + result.affectedRows);
+    console.log("Number of records deleted: " + deleteUser.affectedRows);
     // Send a response to the client
-    res.send("Record deleted successfully");
+    res.status(200).json({message:"Record deleted successfully"});
   });
+}catch (err){
+  console.error("Error deleting artwork: ", err);
+  res.status(500).send("Error deleting artwork");
+}
+  
 });
 
 module.exports = router;
