@@ -70,13 +70,13 @@ if (isset($_POST["submit"])) {
         <form action="" method="post">
             <h3>welcome to <span>vintage society<i class="fas fa-registered"></i></span></h3>
             <img src="images/vintage_logo.png" alt="">
-            <input type="email" name="email" placeholder="Enter your email" required class="box">
-            <input type="password" name="password" placeholder="Enter your password" required class="box">
-            <input type="submit" name="submit" value="login" class="btn">
-            <p>Don't have a VS account yet? <a href="register.php">Sign-Up</a></p>
+            <input type="text" name="email" id = "username" placeholder="Enter your username" required class="box">
+            <input type="password" name="password" id = "password" placeholder="Enter your password" required class="box">
+            <input type="submit" name="submit" onclick = "submitForm()" value="login" class="btn">
+            <p>Don't have a VS account yet? <a href="register.html">Sign-Up</a></p>
         </form>
     </div>
-
+    <script src="./javascripts/login.js"></script>
 
 </body>
 

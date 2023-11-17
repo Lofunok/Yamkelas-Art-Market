@@ -19,11 +19,11 @@ con.connect(function (err) {
 });
 
 //Creating a new user
-router.post("/Createuser", function (req, res, next) {
+router.post("/Createuser", async (req, res) => {
   try {
     var sql =
       "insert into users (name, surname, username, password, age, email, usertype, bio, phonenumber) values (?,?,?,?,?,?,?,?,?)";
-    var values = [
+    const { values }  = [
       req.body.hasOwnProperty("name") ? req.body.name : "",
       req.body.hasOwnProperty("surname") ? req.body.surname : "",
       req.body.hasOwnProperty("username") ? req.body.username : "",
@@ -35,18 +35,12 @@ router.post("/Createuser", function (req, res, next) {
       req.body.hasOwnProperty("phonenumber") ? req.body.phonenumber : "",
     ];
 
-    con.query(sql, values, function (err, result) {
-      if (err) {
-    console.error("Error querying artworks table: ", err);
+    const createUser = await pool.query(sql, [values]);
+    console.log("Result: " + result);
+    res.status(200).json(createUser.rows[0]);
+  } catch (err) {
+    console.error("Error creating user: ", err);
     res.status(500).json({error: err});
-    return;
-      }
-      console.log("Result: " + result);
-      res.status(200).json({message: "created"});
-    });
-  } catch (e) {
-    res.status(404);
-    throw Error("Invalid JSON");
   }
 });
 
@@ -61,7 +55,7 @@ router.get("/Finduser", function (req, res, next) {
     ];
 
     con.query(sql, values, function (err, result) {
-        if (results.length > 0) {
+        if (result.length > 0) {
             res.status(200).json(result);
           } else {
             res.status(404).json({message: "Incorrect username or password"});
@@ -133,20 +127,19 @@ router.delete("/Deleteuser/:userid", function (req, res, next) {
 });
 
 //get all users
-router.get("/users", function (req, res, next) {
+router.get("/users", async (req, res) => {
   try {
     var sql = "select * from users";
 
-    con.query(sql, function (err, result) {
-      if (results.length > 0) {
-        res.status(200).json(result);
+    const allUsers = await pool.query(sql);
+      if (allUsers.length > 0) {
+        res.status(200).json(allUsers.rows);
       } else {
-        res.status(404).json({message: "Incorrect username or password"});
+        res.status(404).json({message: "No users"});
       }
-    });
-  } catch (e) {
-    res.status(500);
-    throw Error("invalid JSON");
+  } catch (err) {
+    console.error("Error getting users: ", err);
+    res.status(500).json({error: err});
   }
 });
 module.exports = router;

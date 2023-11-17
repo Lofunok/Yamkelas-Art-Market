@@ -71,23 +71,24 @@ if (isset($_POST["submit"])) {
     <div class="form-container">
         <form action="" method="post">
             <h3>Register New Account</h3>
-
-            <input type="text" name="name" placeholder="Enter your name" required class="box">
-            <input type="text" name="surname" placeholder="Enter your surname" class="box">
-            <input type="email" name="email" placeholder="Enter your email" required class="box">
-            <input type="password" name="password" placeholder="Enter your password" required class="box">
-            <input type="password" name="cpassword" placeholder="Confirm your password" required class="box">
-            <select name="user_type" class="box">
-                <option value="user">user</option>
-                <option value="admin">admin</option>
+            <input type="text" id="name" name="name" placeholder="Enter your name" required class="box">
+            <input type="text" id="surname" name="surname" placeholder="Enter your surname" class="box">
+            <input type="email" id="email" name="email" placeholder="Enter your email" required class="box">
+            <input type="password"  id="password" name="password" placeholder="Enter your password" required class="box">
+            <input type="password" id="cpassword" name="cpassword"placeholder="Confirm your password" required class="box">
+            <input type="text" id="username" name="username"placeholder="Enter your username" required class="box">
+            <input type="text" id="bio" name="bio" placeholder="Enter your bio" class="box">
+            <input type="text" id="phoneNumber" name="phone number" placeholder="Enter your phone number" required class="box">
+            <input type="number" id="age" name="age" placeholder="Enter your age" required class="box">
+            <select id="user_type" name="user_type" class="box">
+                <option value="user">Bidder</option>
+                <option value="seller">Seller</option>
             </select>
-            <input type="password" name="adminkey" placeholder="Enter admin-key if user-type is admin" class="box">
-            <input type="submit" name="submit" value="sign in" class="btn">
-            <p>Already have a VS account? <a href="login.php">Sign-in</a></p>
+            <input type="submit" name = "submit" onclick="submitForm()" value = "sign in" class ="btn">
+            <p>Already have an Art Market account? <a href="login.html">Sign-in</a></p>
         </form>
     </div>
-
-
+    <script src="./javascripts/register.js"></script>
 </body>
 
 </html>

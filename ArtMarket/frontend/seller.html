@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="seller.css">
+    <title>Seller Page</title>
+</head>
+<body>
+
+  <div class="sidenav">
+    <a href="#">My Artworks</a>
+    <a href="#">My Profile</a>
+  </div>
+
+  <div class="main-content">
+    <div class="container">
+      <h1>Artwork Submission</h1>
+      <form id="seller">
+        <label for="artworkImage">Upload Picture:</label>
+        <input type="file" id="artworkImage" name="artworkImage" accept="image/jpeg, image/png" required>
+
+        <label for="artworkName">Name of Artwork:</label>
+        <input type="text" id="artworkName" name="artworkName" required>
+
+        <label for="artworkDescription">Description:</label>
+        <textarea id="artworkDescription" name="artworkDescription" rows="4" required></textarea>
+
+        <label for="artworkCategory">Category:</label>
+        <select id="artworkCategory" name="artworkCategory" required>
+            <option value="painting">Painting</option>
+            <option value="sculpture">Sculpture</option>
+            <option value="photography">Photography</option>
+            <option value="drawing">Drawing</option>
+        </select>
+
+        <label for="sellingOption">Selling Option:</label>
+        <div class="selling-options">
+            <input type="radio" id="selling" name="artworkOption" value="selling" required>
+            <label for="selling">Selling</label>
+            <input type="radio" id="bidding" name="artworkOption" value="bidding" required>
+            <label for="bidding">Bidding</label>
+        </div>
+
+        <div class="price-input" style="display:none;">
+            <label for="artworkPrice">Price:</label>
+            <input type="number" id="artworkPrice" name="artworkPrice" placeholder="Enter price">
+        </div>
+
+        <label for="closeDate">Scheduled Close Date:</label>
+        <input type="date" id="closeDate" name="closeDate" required>
+
+        <button type="submit" onclick="submitArtwork()">Submit</button>
+      </form>
+    </div>
+  </div>
+
+    <script src="seller.js"></script>
+
+</body>
+</html>
