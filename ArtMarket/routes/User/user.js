@@ -61,7 +61,7 @@ router.get("/Finduser", function (req, res, next) {
     ];
 
     con.query(sql, values, function (err, result) {
-        if (results.length > 0) {
+        if (result.length > 0) {
             res.status(200).json(result);
           } else {
             res.status(404).json({message: "Incorrect username or password"});
@@ -138,7 +138,7 @@ router.get("/users", function (req, res, next) {
     var sql = "select * from users";
 
     con.query(sql, function (err, result) {
-      if (results.length > 0) {
+      if (result.length > 0) {
         res.status(200).json(result);
       } else {
         res.status(404).json({message: "Incorrect username or password"});
