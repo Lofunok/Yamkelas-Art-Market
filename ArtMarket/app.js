@@ -12,8 +12,13 @@ var artworkrouter = require("./routes/Artworks/artworks");
 var app = express();
 app.use(cors());
 
-app.get ('/', (req, res) => {
+//Routes
+app.get ('/register', (req, res) => {
   res.sendFile(path.join(__dirname, 'public/register.html'))
+})
+
+app.get ('/login', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public/login.html'))
 })
 
 app.use(logger("dev"));

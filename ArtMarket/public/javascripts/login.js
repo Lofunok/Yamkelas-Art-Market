@@ -4,30 +4,16 @@ function submitForm() {
 
     
     //send data to backend
-    ("http://localhost:5000/user/Createuser",{
-        method: 'POST',
+    ("http://localhost:3000/user/finduser",{
+        method: 'GET',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({name: name, surname: surname, username: username, password:password ,age:age, email: email, usertype: userType,bio: bio,phonenumber: number })
+        body: JSON.stringify({username: username, password: password})
     })
-    .then(response => response.json())
-    .then(data => {
-        console.log(data);
-        switch (userType) {
-            case 'admin':
-                window.location.href = '';
-                break;
-            case 'user':
-                window.location.href = '';
-                break;
-            case 'seller':
-                window.location.href = 'login.html';
-                break;
+    const isSuccessful = response.ok;
+    if (isSuccessful){
+        window.location.href = 'register.html';
     }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-    });
 }
 document.getElementById("register").addEventListener("submit", submitForm);

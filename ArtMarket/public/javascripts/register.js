@@ -1,4 +1,3 @@
-function submitForm() {
     let name = document.getElementById("name").value;
     let surname = document.getElementById("surname").value;
     let email = document.getElementById("email").value;
@@ -9,17 +8,19 @@ function submitForm() {
     let number = document.getElementById("phoneNumber").value;
     let age = document.getElementById("age").value;
     let userType = document.getElementById("user_type").value;
-
     
-    
+    function submitForm() {
+   
+        console.log(age);
     //send data to backend
-    fetch("http://localhost:5000/user/Createuser",{
+    fetch("http://localhost:3000/user/Createuser",{
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({name: name, surname: surname, username: username, password:password ,age:age, email: email, usertype: userType,bio: bio,phonenumber: number })
+        body: JSON.stringify({name: name , surname: surname, username: username, password: password, age: age, email: email, usertype: userType, bio: bio, phonenumber: number })
     })
+    .then(console.log(age))
     .then(response => response.json())
     .then(data => {
         console.log(data);
