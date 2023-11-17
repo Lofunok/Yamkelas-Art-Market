@@ -6,18 +6,14 @@ const pool = require("../../db/db");
 //CREATE
 router.post("/createbid", async (req, res) => {
   try{
-    const { artworkid, bidderid, bidDate, bidTime, bidAmount, isBuyNow } =
-    req.body;
+    const { artworkid, bidderid, bidDate, bidTime, bidAmount, isBuyNow } = req.body;
 
-  const insertSql =
-    "INSERT INTO transactions (artworkid,bidderid,bidDate,bidTime,bidAmount,isBuyNow) VALUES (?,?,?,?,?,?)";
-
-  const values = [artworkid, bidderid, bidDate, bidTime, bidAmount, isBuyNow];
-
-  const createBid = await pool.query(insertSql, values);
-    res.status(200).json({ message: createBid.affectedRows });
+  const createBid = await pool.query("INSERT INTO transactions (artworkid,bidderid,bidDate,bidTime,bidAmount,isBuyNow) VALUES ($1,$2,$3,$4,$5,$6) RETURNING *", [artworkid, bidderid, bidDate, bidTime, bidAmount, isBuyNow]);
+  console.log("Result: " + createBid.rows[0]);
+    res.status(200).json(createBid.rows[0]);
   } catch (err)
 {
+  console.error("Error submitting bid: ", err);
   res.status(500).json({ error: err });
 }  
 });
@@ -25,47 +21,45 @@ router.post("/createbid", async (req, res) => {
 //READ
 router.get("/transactions", async (req, res) => {
   try{
-    const insertSql = "SELECT * FROM transactions";
-
-  const getTransactions = await pool.query(insertSql)
-    res.status(200).json({ message: getTransactions });
-  } catch (err){
-    res.status(404).json({ message: err });
-      console.log(err);
+  const getTransactions = await pool.query("SELECT * FROM transactions")
+  if (getTransactions.rowCount > 0) {
+    res.status(200).json(getTransactions.rows);
+  } else {
+    res.status(404).json({message: "Error getting transactions"});
   }
-  
+}catch(err) {
+res.status(500).json(err);
+}
 });
 
-router.get("/showuserbids/:id", async (req, res) => {
+router.get("/showuserbids/:bidid", async (req, res) => {
   try{
-    const { id } = req.params;
-  const condition = `bidid = ${id}`;
-  const insertSql = `SELECT * FROM transactions WHERE ${condition}`;
+    const id  = [req.params.bidid];
 
-  const getTransaction = await pool.query(insertSql);
-    res.status(200).json({ message: getTransaction });
-  } catch (err)
-  {
-    res.status(404).json({ message: err });
-      console.log(err);
+  const getTransaction = await pool.query(`SELECT * FROM transactions WHERE bidid = ($1)`, id);
+  if (getTransaction.rowCount > 0) {
+    res.status(200).json(getTransaction.rows);
+  } else {
+    res.status(404).json({message: "Error finding transaction"});
   }
-  
+}catch(err) {
+res.status(500).json(err);
+}
 });
 
 router.get("/showartworkbids/:artworkid", async (req, res) => {
   try{
-    const { artworkid } = req.params;
-  const condition = `artworkid = ${artworkid}`;
-  const insertSql = `SELECT * FROM transactions WHERE ${condition}`;
+    const artworkid = [req.params.artworkid];
 
-  const getArtworkBids = await pool.query(insertSql)
-    res.status(200).json({ message: getArtworkBids });
-  }catch (err)
-  {
-    res.status(404).json({ message: err });
-      console.log(err);
+  const getArtworkBids = await pool.query(`SELECT * FROM transactions WHERE artworkid = ($1)`, artworkid);
+  if (getArtworkBids.rowCount > 0) {
+    res.status(200).json(getArtworkBids.rows);
+  } else {
+    res.status(404).json({message: "Error finding transaction"});
   }
-  
+}catch(err) {
+res.status(500).json(err);
+}
 });
 
 module.exports = router;
