@@ -10,6 +10,7 @@ var artworkrouter = require("./routes/Artworks/artworks");
 
 var app = express();
 app.use(cors());
+app.use(bodyParser.json());
 
 app.set('view engine', 'ejs');
 
@@ -20,6 +21,15 @@ app.get('/', (req, res) => {
 app.get('/register', (req, res) => {
   res.render("register");
 })
+
+app.get('/home', (req, res) => {
+  res.render("home");
+})
+
+app.get('/men', (req, res) => {
+  res.render("men");
+})
+
 
 app.post('/register', (req, res) => {
   res.render("login");

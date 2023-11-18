@@ -29,8 +29,7 @@ if (isset($_POST['add_to_cart'])) {
         mysqli_query($conn, "INSERT INTO `cart`(user_id, name, product_id, price, gender, size, quantity, image) VALUES('$user_id', '$product_name', '$product_id',  '$product_price', '$product_gender', '$product_size', '$product_quantity', '$product_image')") or die('query failed');
         $message[] = 'product added to cart!';
     }
-}
-
+};
 
 ?>
 
@@ -41,7 +40,7 @@ if (isset($_POST['add_to_cart'])) {
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>shop</title>
+    <title>home</title>
 
     <!-- font awesome cdn link  -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
@@ -49,28 +48,33 @@ if (isset($_POST['add_to_cart'])) {
         crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <!-- custom css file link  -->
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="stylesheets/style.css">
 
 </head>
 
 <body class="theme-color">
 
-    <?php include 'header.php'; ?>
+    <?php include 'header.php' ?>
 
+    <section class="home">
 
-    <div class="heading">
-        <h3>shop vintage clothes</h3>
-        <p> <a href="home.php">Home</a> / Clothes </p>
-    </div>
+        <div class="content">
+            <h3>only the finest.</h3>
+            <p>We take great care in sourcing the vintage clothes and antique items that we sell to our customers. So
+                you can rest assured knowing the products purchased here are of the highest quality.
+            </p>
+        </div>
+
+    </section>
 
     <section class="products">
 
-        <h1 class="title">latest apparals</h1>
+        <h1 class="title">latest drop</h1>
 
         <div class="box-container">
 
             <?php
-            $select_products = mysqli_query($conn, "SELECT * FROM `clothes` WHERE gender = 'M'") or die('query failed');
+            $select_products = mysqli_query($conn, "SELECT * FROM `clothes` LIMIT 6") or die('query failed');
             if (mysqli_num_rows($select_products) > 0) {
                 while ($fetch_products = mysqli_fetch_assoc($select_products)) {
             ?>
@@ -102,17 +106,21 @@ if (isset($_POST['add_to_cart'])) {
             ?>
         </div>
 
-
     </section>
 
 
+    <section class="home-contact">
 
+        <div class="content">
+            <h3>have any questions?</h3>
+            <p>Feel free to send us a message using the link below. We will do our utmost to get back to you as soon as
+                possible.</p>
+            <a href="contact.php" class="white-btn">contact us</a>
+            <p> An Affiliated Company Provided by Mentallink Studios. <i class="fas fa-registered"></i></p>
+        </div>
 
+    </section>
 
-
-
-
-    <?php include 'footer.php'; ?>
 
     <!-- custom js file link  -->
     <script src="js/script.js"></script>
