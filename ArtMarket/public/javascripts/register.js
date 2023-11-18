@@ -1,3 +1,6 @@
+    document.getElementById("register").addEventListener("submit", submitForm);
+
+    async function submitForm() {
     let name = document.getElementById("name").value;
     let surname = document.getElementById("surname").value;
     let email = document.getElementById("email").value;
@@ -5,39 +8,34 @@
     let cpassword = document.getElementById("cpassword").value;
     let username = document.getElementById("username").value;
     let bio = document.getElementById("bio").value;
-    let number = document.getElementById("phoneNumber").value;
-    let age = document.getElementById("age").value;
-    let userType = document.getElementById("user_type").value;
-    
-    function submitForm() {
+    let number = document.getElementById("phonenumber").value;
+    let age = parseInt(document.getElementById("age").value);
+    let usertype = document.getElementById("usertype").value;
    
-        console.log(age);
+    const endpoint = new URL("http://localhost:3000/user/Createuser");
     //send data to backend
-    fetch("http://localhost:3000/user/Createuser",{
+    const response = await fetch(endpoint,{
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({name: name , surname: surname, username: username, password: password, age: age, email: email, usertype: userType, bio: bio, phonenumber: number })
+        body: JSON.stringify({name: name , surname: surname, username: username, password: password, age: age, email: email, usertype: usertype, bio: bio, phonenumber: number })
     })
-    .then(console.log(age))
-    .then(response => response.json())
-    .then(data => {
-        console.log(data);
-        switch (userType) {
-            case 'admin':
-                window.location.href = '';
-                break;
-            case 'user':
-                window.location.href = '';
-                break;
-            case 'seller':
-                window.location.href = 'login.html';
-                break;
-    }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-    });
+
+    const data = await response.json();
+    console.log(data)
+    switch (data.usertype) {
+        case 'admin':
+            window.location.href = '';
+            break;
+        case 'user':
+            location.replace('http://localhost:3000/');
+            break;
+        case 'seller':
+            location.replace('http://localhost:3000/');
+            break;
+    };
+    
 }
-document.getElementById("register").addEventListener("submit", submitForm);
+
+

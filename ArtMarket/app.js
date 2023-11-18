@@ -2,30 +2,38 @@ var express = require("express");
 var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
-const cors = require("cors");
+var cors =  require('cors');
 
 var userRouter = require("./routes/User/user");
 var transactionsRouter = require("./routes/Transactions/transactions");
 var artworkrouter = require("./routes/Artworks/artworks");
 
-//middleware
 var app = express();
 app.use(cors());
 
-//Routes
-app.get ('/register', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public/register.html'))
+app.set('view engine', 'ejs');
+
+app.get('/', (req, res) => {
+  res.render("login");
 })
 
-app.get ('/login', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public/login.html'))
+app.get('/register', (req, res) => {
+  res.render("register");
+})
+
+app.post('/register', (req, res) => {
+  res.render("login");
+})
+
+app.post('/login', (req, res) => {
+  res.render("home");
 })
 
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(path.join(__dirname, "/public")));
 
 app.use("/user", userRouter);
 app.use("/transactions", transactionsRouter);

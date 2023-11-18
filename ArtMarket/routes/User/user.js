@@ -9,7 +9,7 @@ router.post("/Createuser", async (req, res) => {
       const {name, surname, username, password, age, email, usertype, bio, phonenumber} = req.body;
       
     const newUser = await pool.query("insert into users (name, surname, username, password, age, email, usertype, bio, phonenumber) values ($1,$2,$3,$4,$5,$6,$7,$8,$9) RETURNING *", [name, surname, username, password, age, email, usertype, bio, phonenumber]);
-      console.log("Result: " + newUser.rows[0]);
+      console.log("Created user");
       res.status(200).json(newUser.rows[0]);
   } catch (err) {
     console.error("Error creating user: ", err);

@@ -1,10 +1,12 @@
-function submitForm() {
+document.getElementById("register").addEventListener("submit", submitForm);
+async function submitForm() {
     let password = document.getElementById("password").value;
     let username = document.getElementById("username").value;
 
     
+    const endpoint = new URL("http://localhost:3000/user/finduser");
     //send data to backend
-    ("http://localhost:3000/user/finduser",{
+    (URL,{
         method: 'GET',
         headers: {
             'Content-Type': 'application/json'
@@ -16,4 +18,3 @@ function submitForm() {
         window.location.href = 'register.html';
     }
 }
-document.getElementById("register").addEventListener("submit", submitForm);

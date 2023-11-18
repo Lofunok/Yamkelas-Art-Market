@@ -77,18 +77,18 @@ if (isset($_POST["submit"])) {
             <input type="password"  id="password" name="password" placeholder="Enter your password" required class="box">
             <input type="password" id="cpassword" name="cpassword"placeholder="Confirm your password" required class="box">
             <input type="text" id="username" name="username"placeholder="Enter your username" required class="box">
-            <input type="text" id="bio" name="bio" placeholder="Enter your bio" class="box">
-            <input type="text" id="phoneNumber" name="phone number" placeholder="Enter your phone number" required class="box">
-            <input type="number" id="age" name="age" placeholder="Enter your age" required class="box">
-            <select id="user_type" name="user_type" class="box">
+            <input type="text" id="bio" name="bio" placeholder="Enter your bio" required class="box">
+            <input type="text" id="phonenumber" name="phonenumber" placeholder="Enter your phone number" required class="box">
+            <input type="number" id="age" name="age" placeholder= "Enter your age" required class="box">
+            <select id="usertype" name="usertype" class="box">
                 <option value="user">Bidder</option>
                 <option value="seller">Seller</option>
             </select>
             <input type="submit" name = "submit" onclick="submitForm()" value = "sign in" class ="btn">
-            <p>Already have an Art Market account? <a href="/login">Sign-in</a></p>
+            <p>Already have an Art Market account? <a href="/">Sign-in</a></p>
         </form>
     </div>
-    <script src="./javascripts/register.js"></script>
+    <script src="javascripts/register.js"></script>></script>
 </body>
 
 </html>
