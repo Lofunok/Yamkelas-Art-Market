@@ -18,9 +18,9 @@ router.post("/Createuser", async (req, res) => {
 });
 
 // Find specific user
-router.get("/Finduser", async (req, res) => {
+router.get("/Finduser/:username/:password", async (req, res) => {
   try {
-    const {username, password} = req.body;
+    const {username, password} = req.params;
 
     const findUser = await pool.query("select * from users where username=($1) and password=($2)", [username, password]);
         if (findUser.rowCount > 0) {
@@ -37,9 +37,9 @@ router.get("/Finduser", async (req, res) => {
 //update a user
 router.put("/Updateuser", async (req, res) => {
   try {
-      const {name, surname, username, password, age, email, bio, phonenumber, userid} = req.body;
+      const {name, surname, password, age, email, bio, phonenumber, userid} = req.body;
 
-    const updateUser = await pool.query("update users set name=($1), surname=($2), username=($3), password=($4), age=($5), email=($6), bio=($7), phonenumber=($8) where userid=($9)", [name, surname, username, password, age, email, bio, phonenumber, userid]);
+    const updateUser = await pool.query("update users set name=($1), surname=($2), password=($3), age=($4), email=($5), bio=($6), phonenumber=($7) where userid=($8)", [name, surname, password, age, email, bio, phonenumber, userid]);
       console.log("Updated successfully");
       res.status(200).json({message: "Updated successfully"});
   

@@ -2,13 +2,27 @@ var express = require("express");
 var router = express.Router();
 require('dotenv').config();
 const pool = require("../../db/db");
+var multer = require('multer');
+const path = require('path');
 
 //create new artwork for bidding
-router.post("/createartwork", async (req, res) => {
+const storage = multer.diskStorage({
+  destination: function(req, file, callback) {
+    const destinationPath = path.join(__dirname,'..','..', 'upload_images');
+    callback(null, destinationPath);
+  },
+  filename: function(req, file, callback){
+    callback(null, file.originalname);
+  }
+})
+
+const images = multer({storage: storage});
+
+
+router.post("/createartwork",images.array("artworkImage") ,async (req, res) => {
   try{
     const {
     artworkName,
-    artworkImg,
     description,
     catagories,
     sellerid,
@@ -18,6 +32,8 @@ router.post("/createartwork", async (req, res) => {
     active,
     buyNowPrice
   } = req.body;
+
+  const artworkImg = req.files[0].filename;
 
   const createArtwork = await pool.query("INSERT INTO artworks (artworkName, artworkImg, description, catagories, sellerid,dateListed,timeListed,scheduledcloseDate,active,buyNowPrice) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *", 
   [artworkName,
@@ -71,39 +87,34 @@ router.put("/updateartwork", async(req, res) => {
 });
 
 //view all artworks in artworks table
-router.get("/artworks", async (req, res) => {
-  try{
-    const getAllArtworks= await pool.query("SELECT * FROM artworks");
-    if (getAllArtworks.rowCount > 0) {
-      res.status(200).json(getAllArtworks.rows);
-    } else {
-      res.status(404).json({message: "No artworks found"});
-    }
-} catch (err){
-  res.status(500).json(err);
-}
-});
-  
-  
-
-//view all of own artwork
 router.get("/viewartwork/:sellerid", async (req, res) => {
-  try{
-    var sellerid = [req.params.sellerid];
+  try {
+    const sellerid = req.params.sellerid;
 
-  const findArtwork = await pool.query("SELECT * FROM artworks WHERE sellerid = ($1)", sellerid);
-  if (findArtwork.rowCount > 0) {
-    res.status(200).json(findArtwork.rows);
-  } else {
-    res.status(404).json({message: "No artwork found"});
-  }
-  
-  } catch (err){
+    const findArtwork = await pool.query("SELECT * FROM artworks WHERE sellerid = $1", [sellerid]);
+
+    if (findArtwork.rowCount > 0) {
+      const artworksWithImages = findArtwork.rows.map(artwork => {
+        const imageURL = `../upload_images/${artwork.artworkimg}`;
+        return {
+          id: artwork.sellerid,
+          name: artwork.artworkname,
+          status: artwork.closedate,
+          images: [imageURL],
+        };
+      });
+      res.status(200).json(artworksWithImages);
+    } else {
+      res.status(404).json({ message: "No artwork found for the specified sellerid" });
+    }
+  } catch (err) {
     console.error("Error querying artworks table: ", err);
-      res.status(500).json({error: "Error querying artworks table"});
+    res.status(500).json({ error: "Internal Server Error" });
   }
-  
 });
+
+
+
 
 //delete artwork
 // Define the delete route

@@ -1,3 +1,15 @@
+document.addEventListener("DOMContentLoaded", function () {
+    const isRegistered = localStorage.getItem('isRegistered');
+    const cameFromRegister = document.referrer.includes('/register'); 
+
+    if (isRegistered === 'true' && cameFromRegister) {
+        alert('You have successfully been registered as a seller!');
+    
+        localStorage.removeItem('isRegistered');
+    }
+    localStorage.setItem('isRegistered', 'true');
+});
+
 function submitArtwork(e){
 
     e.preventDefault();
@@ -11,8 +23,8 @@ function submitArtwork(e){
     let priceInput = document.getElementById("artworkPrice");
     let active = 0;
     
-
-    let sellerid = 7;
+    let sellerid = sessionStorage.getItem('userId');
+    console.log(`sellerid: ${sellerid}`)
 
     let currentDate = new Date();
 
@@ -63,7 +75,7 @@ function submitArtwork(e){
         formData.append('active', active);
         formData.append('buyNowPrice', priceInput);
 
-        fetch("http://localhost:5000/artworks/create",{
+        fetch("http://localhost:5000/artworks/createartwork",{
             method: 'POST',
             body:formData
         });
@@ -84,9 +96,33 @@ document.addEventListener("DOMContentLoaded", function () {
         priceInput.style.display = sellingOption.checked ? "block" : "none";
     }
 
-    // Initial setup
     updatePriceInputVisibility();
 
     sellingOption.addEventListener("change", updatePriceInputVisibility);
     biddingOption.addEventListener("change", updatePriceInputVisibility);
+
+    var username = encodeURIComponent(sessionStorage.getItem('username'));
+    var password = encodeURIComponent(sessionStorage.getItem('password'));
+
+    fetch(`http://localhost:5000/user/Finduser/${username}/${password}`)
+    .then(response => {
+        console.log('Response Status:', response.status);
+        return response.json();
+    })
+    .then(data => {
+        console.log('Server Response:', data);
+        if (data.length > 0) {
+            var userId = data[0].userid;
+            sessionStorage.setItem('userId', userId);
+
+        } else {
+            console.log('User not found or incorrect username/password');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+
+    console.log('Username:', username);
+    console.log('Password:', password);
 });
