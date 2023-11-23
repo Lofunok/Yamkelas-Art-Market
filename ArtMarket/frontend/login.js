@@ -26,6 +26,7 @@ function submitForm() {
                             break;
                     }
                 }
+            sessionStorage.setItem('userid', users[i].userid);
             }
 
         })
