@@ -14,6 +14,7 @@ function submitForm() {
             for (let i = 0; i < users.length; i++) {
                 if ((username === users[i].username) && (password === users[i].password)) {
                     console.log(users[i].usertype);
+                    sessionStorage.setItem('userId', users[i].userid);
                     switch (users[i].usertype) {
                         case 'admin':
                             window.location.href = 'adminDashboard.html';
@@ -26,7 +27,7 @@ function submitForm() {
                             break;
                     }
                 }
-            sessionStorage.setItem('userid', users[i].userid);
+            
             }
 
         })

@@ -36,7 +36,7 @@ function displayArtworks() {
                 bidButton.addEventListener("click", () => viewHighestBid(artwork.id));
 
                 const statusLabel = document.createElement("div");
-                statusLabel.innerText = `Status: ${artwork.status === null ? "Open" : "Closed"}`;
+                statusLabel.innerText = `Status: ${artwork.active === 1 ? "Open" : "Closed"}`;
                 statusLabel.classList.add("status-label");
 
                 artworkInfo.appendChild(bidButton);
