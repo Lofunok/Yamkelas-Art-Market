@@ -8,7 +8,7 @@ function displayArtworks() {
     const sellerid = encodeURIComponent(sessionStorage.getItem('userId'));
 
     // Fetch artworks from the server
-    fetch(`http://localhost:5000/artworks/viewartwork/${sellerid}`)
+    fetch(`http://localhost:5000/artworks/artworks`)
         .then(response => response.json())
         .then(artworks => {
             console.log(artworks)
@@ -67,12 +67,8 @@ function viewHighestBid(artworkId) {
     const popupContent = document.createElement("div");
     popupContent.classList.add("popup-content");
 
-    const highestBidLabel = document.createElement("div");
-    highestBidLabel.innerText = "Highest Bid: R1000"; 
-    popupContent.appendChild(highestBidLabel);
-
     const acceptBidButton = document.createElement("button");
-    acceptBidButton.innerText = "Accept Bid";
+    acceptBidButton.innerText = "Send Bid";
     acceptBidButton.addEventListener("click", () => handleAcceptBid(artworkId));
     popupContent.appendChild(acceptBidButton);
 

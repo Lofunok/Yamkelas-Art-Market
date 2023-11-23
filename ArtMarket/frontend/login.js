@@ -16,10 +16,10 @@ function submitForm() {
                     console.log(users[i].usertype);
                     switch (users[i].usertype) {
                         case 'admin':
-                            window.location.href = 'admin_page.html';
+                            window.location.href = 'adminDashboard.html';
                             break;
                         case 'user':
-                            window.location.href = 'users.html';
+                            window.location.href = 'Home.html';
                             break;
                         case 'seller':
                             window.location.href = 'seller.html';

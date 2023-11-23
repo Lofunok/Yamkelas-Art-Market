@@ -132,4 +132,27 @@ router.delete("/deleteartwork/:artworkid", async (req, res) => {
   
 });
 
+router.get("/artworks", async (req, res) => {
+  try {
+    const getArtworks = await pool.query("select * from artworks");
+    if (getArtworks.rowCount > 0) {
+      const artworksWithImages = getArtworks.rows.map(artwork => {
+        const imageURL = `../upload_images/${artwork.artworkimg}`;
+        return {
+          id: artwork.sellerid,
+          name: artwork.artworkname,
+          status: artwork.closedate,
+          images: [imageURL],
+        };
+      });
+      res.status(200).json(artworksWithImages);
+    } else {
+      res.status(404).json({ message: "No artworks found" });
+    }
+  } catch (err) {
+    console.error("Error querying artworks table: ", err);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
 module.exports = router;
