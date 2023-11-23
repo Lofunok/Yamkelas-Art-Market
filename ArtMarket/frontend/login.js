@@ -25,10 +25,7 @@ function submitForm() {
                             window.location.href = 'seller.html';
                             break;
                     }
-
-            sessionStorage.setItem('username', username);
-            sessionStorage.setItem('password', password);
-                } 
+                }
             }
 
         })
