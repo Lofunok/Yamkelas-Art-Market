@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>login</title>
+
+    <!-- font awesome cdn link -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+        integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!--custom css file link-->
+    <link rel="stylesheet" href="./style.css">
+</head>
+
+
+<body>
+    <div class="form-container">
+        <form id = "login" action="" method="get">
+            <h3>welcome to <span>art market<i class="fas fa-registered"></i></span></h3>
+            <img src="../public/images/vintage_logo.png" alt="">
+            <input type="text" name="username" id = "username" placeholder="Enter your username" required class="box">
+            <input type="password" name="password" id = "password" placeholder="Enter your password" required class="box">
+            <input type="submit" name="submit" onclick = "submitForm()" value="login" class="btn">
+            <p>Don't have an Art Market account yet? <a href="register.html">Sign-Up</a></p>
+        </form>
+    </div>
+    <script src="login.js"></script>
+
+</body>
+
+</html>

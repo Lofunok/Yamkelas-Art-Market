@@ -22,7 +22,7 @@ app.get('/register', (req, res) => {
 })
 
 app.get('/home', (req, res) => {
-  res.render("home");
+  res.render("MyArtworks");
 })
 
 app.get('/men', (req, res) => {

@@ -150,7 +150,7 @@ section {
   justify-content: center;
   gap: 1rem;
   background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
-    url(../images/blur-blurred-background-boutique-clothes.jpg) no-repeat;
+    url(../public/images/blur-blurred-background-boutique-clothes.jpg) no-repeat;
   background-size: cover;
   background-position: center;
   text-align: center;
@@ -191,7 +191,7 @@ section {
   justify-content: center;
   padding: 2rem;
   background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
-    url(../images/Home_page_image.webp) no-repeat;
+    url(../public/images/art-dajgwkpkb3im2q3u.jpg) no-repeat;
   background-size: cover;
   background-position: center;
 }
